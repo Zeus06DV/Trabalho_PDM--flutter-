@@ -1,55 +1,65 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ComponenteInicial());
+main(){
+runApp(Alexpdm());
 }
 
-class ComponenteInicial extends StatelessWidget {
-  void eventoBotao() {
-    print("Clicou");
-  }
+class Alexpdm extends StatefulWidget{ // StatelessWidget trabalha com os valores estáticos, mudando para StatefulWidget leva em conta o estado
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Perguntas e Respostas"),
-        ),
-        body: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: eventoBotao,
-                    child: Text("Enviar"),
-                  ),
-                  ElevatedButton(
-                    onPressed: eventoBotao,
-                    child: Text("Cancelar"),
-                  ),
-                  ElevatedButton(
-                    onPressed: eventoBotao,
-                    child: Text("Salvar"),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text("Aprendendo"),
-                  Text("Programação"),
-                  Text("Flutter"),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+@override
+State<Alexpdm> createState() => _AlexpdmState();
+
+}
+class _AlexpdmState extends State<Alexpdm> {
+
+
+
+var contador = 0;// nao sao variaveis, sao elementos de estado
+
+final perguntas = [
+"Seu esporte favorito?",  //0
+"Sua estação do ano favorita?",//1
+"Hobbie que mais gosta?", //2
+"Sua matéria escolar preferida?" //3
+];
+
+void clicou() {
+//contador ++;
+setState((){                    // funcao propria do flutter qye altera o var contador
+contador: contador++;
+
+});
+print(contador);
+}
+
+Widget build(BuildContext context){
+return MaterialApp(
+home: Scaffold(
+appBar: AppBar(
+title: Text("Meu primeiro App"),
+),
+body: Column(
+children:  [
+Text(perguntas[contador]),
+ElevatedButton(
+onPressed: clicou,
+child: Text('Clique aqui')
+),  //ElevatedButton(
+
+
+ElevatedButton(
+onPressed: () {
+print("outra funcao");
+},
+child: Text('Clique aqui') 
+), 
+ElevatedButton(
+onPressed : () => print("Função arrow"),
+child: Text('Clique aqui')
+),
+],
+),
+),
+);
+}
 }
