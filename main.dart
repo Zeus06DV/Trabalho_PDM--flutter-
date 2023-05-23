@@ -1,65 +1,35 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:my_app/botoes.dart';
 
-main(){
-runApp(Alexpdm());
+main() {
+  runApp(atvbotao());
 }
 
-class Alexpdm extends StatefulWidget{ // StatelessWidget trabalha com os valores estáticos, mudando para StatefulWidget leva em conta o estado
-
-@override
-State<Alexpdm> createState() => _AlexpdmState();
-
-}
-class _AlexpdmState extends State<Alexpdm> {
-
-
-
-var contador = 0;// nao sao variaveis, sao elementos de estado
-
-final perguntas = [
-"Seu esporte favorito?",  //0
-"Sua estação do ano favorita?",//1
-"Hobbie que mais gosta?", //2
-"Sua matéria escolar preferida?" //3
-];
-
-void clicou() {
-//contador ++;
-setState((){                    // funcao propria do flutter qye altera o var contador
-contador: contador++;
-
-});
-print(contador);
+class atvbotao extends StatefulWidget {
+  @override
+  State<atvbotao> createState() => _atvbotaoState();
 }
 
-Widget build(BuildContext context){
-return MaterialApp(
-home: Scaffold(
-appBar: AppBar(
-title: Text("Meu primeiro App"),
-),
-body: Column(
-children:  [
-Text(perguntas[contador]),
-ElevatedButton(
-onPressed: clicou,
-child: Text('Clique aqui')
-),  //ElevatedButton(
-
-
-ElevatedButton(
-onPressed: () {
-print("outra funcao");
-},
-child: Text('Clique aqui') 
-), 
-ElevatedButton(
-onPressed : () => print("Função arrow"),
-child: Text('Clique aqui')
-),
-],
-),
-),
-);
-}
+class _atvbotaoState extends State<atvbotao> {
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text("Atividade botão"),
+          ),
+          body: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 200, vertical: 20),
+            child: Column(
+              children: [
+                Text("botão criado por componente:"),
+                Botao("eu sou um botao"),
+              ],
+            ),
+          )),
+    );
+  }
 }
