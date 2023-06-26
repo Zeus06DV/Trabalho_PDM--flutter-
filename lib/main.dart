@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import './questionário.dart';
+import './resposta';
+import './questao';
+
 void main() {
   runApp(AulaComponentes());
 }
@@ -53,109 +57,8 @@ class _AulaComponentesState extends State<AulaComponentes> {
                 perguntaAtual: perguntaAtual,
                 onRespostaSelecionada: () => acao(),
               )
-            : Resultado(
-                perguntas: perguntas,
-                respostasSelecionadas: Questionario.respostasSelecionadas,
-              ),
+            : Text("Resultado"),
       ),
-    );
-  }
-}
-
-class Questao extends StatelessWidget {
-  final String texto;
-
-  Questao(this.texto);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.all(10),
-      child: Text(
-        texto,
-        style: TextStyle(fontSize: 28),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
-
-class Resposta extends StatelessWidget {
-  final String texto;
-  final void Function() onSelecao;
-
-  Resposta(this.texto, this.onSelecao);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        child: Text(texto),
-        onPressed: onSelecao,
-      ),
-    );
-  }
-}
-
-class Questionario extends StatelessWidget {
-  final List<Map<String, Object>> perguntas;
-  final int perguntaAtual;
-  final void Function() onRespostaSelecionada;
-  static List<String> respostasSelecionadas = [];
-
-  Questionario({
-    required this.perguntas,
-    required this.perguntaAtual,
-    required this.onRespostaSelecionada,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> respostas =
-        perguntas[perguntaAtual]["respostas"] as List<String>;
-    return Column(
-      children: [
-        ...(respostas.map((resposta) {
-          return Resposta(resposta, () {
-            respostasSelecionadas.add(resposta);
-            onRespostaSelecionada();
-          });
-        })).toList(),
-      ],
-    );
-  }
-}
-
-class Resultado extends StatelessWidget {
-  final List<Map<String, Object>> perguntas;
-  final List<String> respostasSelecionadas;
-
-  Resultado({required this.perguntas, required this.respostasSelecionadas});
-
-  List<String> getRespostas() {
-    List<String> respostas = [];
-    for (var i = 0; i < perguntas.length; i++) {
-      String pergunta = perguntas[i]["texto"].toString();
-      String resposta = respostasSelecionadas[i];
-      respostas.add('$pergunta: $resposta');
-    }
-    return respostas;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> respostas = getRespostas();
-    return Column(
-      children: [
-        Text(
-          'Respostas:',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        ...respostas.map((resposta) => Text(resposta)).toList(),
-      ],
     );
   }
 }
