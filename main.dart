@@ -1,70 +1,125 @@
 import 'package:flutter/material.dart';
-import './questao.dart';.
-import './resposta.dart';
+import 'dart:math';
 
-main() {
-  runApp(AulaComponentes());
-}
+class Ficha extends StatelessWidget {
+  final String imageUrl;
+  final String nome;
+  final int matricula;
+  final String escola;
+  final String ano;
+  final String periodo;
 
-class AulaComponentes extends StatefulWidget{
+  Ficha({
+    required this.imageUrl,
+    required this.nome,
+    required this.matricula,
+    required this.escola,
+    required this.ano,
+    required this.periodo,
+  });
+
   @override
-  State<AulaComponentes> createState() => _AulaComponentesState();
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              imageUrl,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nome: $nome',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text('Matrícula: $matricula'),
+                Text('Escola: $escola'),
+                Text('Ano: $ano'),
+                Text('Período: $periodo'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _AulaComponentesState extends State<AulaComponentes> {
+void main() {
+  runApp(MyApp());
+}
 
-  var perguntaAtual = 0;
-  var cor = Colors.white;
-
-  final List<Map<String, Object>> questionario = [
-    {
-      "pergunta": "Qual a sua cor favorita?",
-      "respostas": ["Amarelo", "Preto", "Branco", "Azul", "Vermelho"]
-    },
-    {
-      "pergunta": "Qual é seu animal favorito?",
-      "respostas": ["Cachorro", "Gato", "Tartaruga", "Periquito"]
-    },
-    {
-      "pergunta": "Qual sua linguagem favorita?",
-      "respostas": ["Python", "Java", "JavaScript"]
-    },
+class MyApp extends StatelessWidget {
+  final List<Ficha> fichas = [
+    Ficha(
+      imageUrl:
+          'https://kanto.legiaodosherois.com.br/w760-h398-cfill/wp-content/uploads/2021/11/legiao_rbuX81dSNDFB.jpg.webp',
+      nome: 'João',
+      matricula: Random().nextInt(100000),
+      escola: 'UFMG',
+      ano: '2023',
+      periodo: '6° Período',
+    ),
+    Ficha(
+      imageUrl:
+          'https://kanto.legiaodosherois.com.br/w760-h398-cfill/wp-content/uploads/2021/11/legiao_e1wvD4rFNJUu.jpg.webp',
+      nome: 'Miguel',
+      matricula: Random().nextInt(100000),
+      escola: 'UFLA',
+      ano: '2023',
+      periodo: '8° Período',
+    ),
+    Ficha(
+      imageUrl:
+          'https://kanto.legiaodosherois.com.br/w760-h398-cfill/wp-content/uploads/2021/11/legiao_lObZ0Lkv79ih.jpg.webp',
+      nome: 'Rafael',
+      matricula: Random().nextInt(100000),
+      escola: 'UFV',
+      ano: '2023',
+      periodo: '2° Período',
+    ),
   ];
 
-  bool get temPergunta {
-    return perguntaAtual < questionario.length;
-  }
-  
-  void acao() {
-    setState(() {
-      perguntaAtual++;
-    });
-    print(perguntaAtual);
-  }
-
+  @override
   Widget build(BuildContext context) {
-
-    List<Widget> respostas = [];
-
-    if (temPergunta) {
-      for (var resposta in questionario[perguntaAtual]["respostas"] as List<String>) {
-        respostas.add(
-          Resposta(resposta, acao),
-        );
-      }
-    }
-    
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: temPergunta ? Questao(questionario[perguntaAtual]["pergunta"].toString()) : Questao("Terminou"),
+          title: Text('Ficha de Alunos'),
         ),
-        body: temPergunta ? Column(
-          children: [
-            ...respostas,
-          ],
-        ) : Text("Resultado"),
-      ),
-    );
-  }
+        body: ListView.builder(
+          itemCount: fichas.length,
+          itemBuilder: (ctx, index) {
+            return fichas[index];
+          },
+        ),
+      ),
+    );
+  }
 }
