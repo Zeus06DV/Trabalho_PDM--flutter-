@@ -1,63 +1,67 @@
 import 'package:flutter/material.dart';
-
-import './questionário.dart';
-import './resposta';
-import './questao';
+import 'mock_data.dart';
 
 void main() {
-  runApp(AulaComponentes());
+  runApp(TarefaApp());
 }
 
-class AulaComponentes extends StatefulWidget {
+class TarefaApp extends StatelessWidget {
   @override
-  State<AulaComponentes> createState() => _AulaComponentesState();
-}
-
-class _AulaComponentesState extends State<AulaComponentes> {
-  var perguntaAtual = 0;
-  var cor = Colors.white;
-
-  final List<Map<String, Object>> perguntas = [
-    {
-      "texto": "Qual a sua cor favorita?",
-      "respostas": ["Amarelo", "Preto", "Branco", "Azul", "Vermelho"]
-    },
-    {
-      "texto": "Qual é seu animal favorito?",
-      "respostas": ["Cachorro", "Gato", "Tartaruga", "Periquito"]
-    },
-    {
-      "texto": "Qual sua linguagem favorita?",
-      "respostas": ["Python", "Java", "JavaScript"]
-    },
-  ];
-
-  bool get temPergunta {
-    return perguntaAtual < perguntas.length;
-  }
-
-  void acao() {
-    setState(() {
-      perguntaAtual++;
-    });
-    print(perguntaAtual);
-  }
-
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: temPergunta
-              ? Questao(perguntas[perguntaAtual]["texto"].toString())
-              : Questao("Terminou"),
+      title: 'Tarefa App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: TarefaListScreen(),
+    );
+  }
+}
+
+class TarefaListScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Lista de Tarefas')),
+      body: ListView.builder(
+        itemCount: mockItems.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(mockItems[index].title),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TarefaDetailScreen(item: mockItems[index]),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TarefaDetailScreen extends StatelessWidget {
+  final Item item;
+
+  TarefaDetailScreen({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Detalhes da Tarefa')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Título: ${item.title}', style: TextStyle(fontSize: 20)),
+            SizedBox(height: 10),
+            Text('Descrição: ${item.description}'),
+          ],
         ),
-        body: temPergunta
-            ? Questionario(
-                perguntas: perguntas,
-                perguntaAtual: perguntaAtual,
-                onRespostaSelecionada: () => acao(),
-              )
-            : Text("Resultado"),
       ),
     );
   }
