@@ -1,67 +1,42 @@
 import 'package:flutter/material.dart';
-import 'mock_data.dart';
-
+import 'package:prova1/generation.dart'; 
+import 'package:prova1/geracao.dart'; 
+import 'package:prova1/generations.dart'; 
 void main() {
-  runApp(TarefaApp());
+  runApp(PokemonApp());
 }
 
-class TarefaApp extends StatelessWidget {
+class PokemonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tarefa App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TarefaListScreen(),
+      home: GenerationsScreen(generations),
     );
   }
 }
 
-class TarefaListScreen extends StatelessWidget {
+class GenerationsScreen extends StatelessWidget {
+  final List<Generation> generations;
+
+  GenerationsScreen(this.generations);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lista de Tarefas')),
-      body: ListView.builder(
-        itemCount: mockItems.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(mockItems[index].title),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TarefaDetailScreen(item: mockItems[index]),
-                ),
-              );
-            },
-          );
-        },
+      appBar: AppBar(
+        title: Text('Gerações de Pokémon'),
       ),
-    );
-  }
-}
-
-class TarefaDetailScreen extends StatelessWidget {
-  final Item item;
-
-  TarefaDetailScreen({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Detalhes da Tarefa')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Título: ${item.title}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Descrição: ${item.description}'),
-          ],
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
+        itemCount: generations.length,
+        itemBuilder: (ctx, index) {
+          return GeracaoItem(generations[index]);
+        },
       ),
     );
   }
